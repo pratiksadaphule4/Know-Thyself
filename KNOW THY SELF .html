@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type A Behavior Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin: 15px 0;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Type A Behavior Questionnaire</h1>
+<div id="quiz"></div>
+<button id="submit">Submit Answers</button>
+<div class="result" id="result"></div>
+
+<script>
+    const questions = [
+        {
+            question: "1. Is your daily life filled mainly with:",
+            answers: ["a. problems needing solution", "b. challenges needing to be met", "c. a predictable routine of events", "d. not enough things to keep me busy"]
+        },
+        {
+            question: "2. When you are under pressure, do you:",
+            answers: ["a. do something about it at once", "b. plan carefully before taking action"]
+        },
+        {
+            question: "3. How rapidly do you eat?",
+            answers: ["a. very fast-I'm usually finished before others are finished", "b. faster than average", "c. about average", "d. more slowly than average"]
+        },
+        {
+            question: "4. Has your best friend ever told you that you eat too fast?",
+            answers: ["a. yes, often", "b. yes, occasionally", "c. no"]
+        },
+        {
+            question: "5. When you listen to someone speaking, do you feel like hurrying him/her along?",
+            answers: ["a. frequently", "b. sometimes", "c. never"]
+        },
+        {
+            question: "6. How often do you 'put words in his/her mouth' to speed things up?",
+            answers: ["a. frequently", "b. sometimes", "c. never"]
+        },
+        {
+            question: "7. When you make an appointment, how often are you late?",
+            answers: ["a. sometimes", "b. rarely", "c. never"]
+        },
+        {
+            question: "8. Do you consider yourself to be:",
+            answers: ["a. very competitive", "b. somewhat competitive", "c. relatively easygoing", "d. very easygoing"]
+        },
+        {
+            question: "9. How would a close friend rate you?",
+            answers: ["a. very competitive", "b. somewhat competitive", "c. relatively easygoing", "d. very easygoing"]
+        },
+        {
+            question: "10. How would others describe your general level of activity?",
+            answers: ["a. slow and inactive; should do more", "b. about average", "c. too active; should slow down"]
+        },
+        {
+            question: "11. Would people who know you well say that you have less energy than most people?",
+            answers: ["a. definitely yes", "b. probably yes", "c. probably no", "d. definitely no"]
+        },
+        {
+            question: "12. How often do you face deadlines in your work?",
+            answers: ["a. every day", "b. once a week", "c. once a month", "d. rarely"]
+        },
+        {
+            question: "13. Do you ever set deadlines for yourself?",
+            answers: ["a. no", "b. sometimes", "c. often"]
+        },
+        {
+            question: "14. Do you ever work on two or more projects at once?",
+            answers: ["a. never", "b. occasionally", "c. often"]
+        },
+        {
+            question: "15. Do you work during vacation periods such as Thanksgiving, Christmas, spring break?",
+            answers: ["a. yes", "b. no", "c. sometimes"]
+        }
+    ];
+
+    const scoringCriteria = {
+        1: ['a', 'b'],
+        2: ['a'],
+        3: ['a', 'b'],
+        4: ['a'],
+        5: ['a'],
+        6: ['a'],
+        7: ['c'],
+        8: ['a', 'b'],
+        9: ['a', 'b'],
+        10: ['c'],
+        11: ['d'],
+        12: ['c'],
+        13: ['c'],
+        14: ['c'],
+        15: ['a'],
+    };
+
+    function displayQuestions() {
+        const quizContainer = document.getElementById('quiz');
+        questions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.innerHTML = `<p>${q.question}</p>`;
+            q.answers.forEach(answer => {
+                questionDiv.innerHTML += `<label><input type="radio" name="q${index + 1}" value="${answer.charAt(0)}"> ${answer}</label><br>`;
+            });
+            quizContainer.appendChild(questionDiv);
+        });
+    }
+
+    function calculateScore() {
+        let score = 0;
+        questions.forEach((_, index) => {
+            const selected = document.querySelector(`input[name="q${index + 1}"]:checked`);
+            if (selected) {
+                const answer = selected.value;
+                if (scoringCriteria[index + 1].includes(answer)) {
+                    score++;
+                }
+            }
+        });
+        return score;
+    }
+
+    document.getElementById('submit').addEventListener('click', () => {
+        const score = calculateScore();
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `Your total score is: ${score}<br>`;
+        if (score >= 12) {
+            resultDiv.innerHTML += "You show some of the same tendencies as Type A persons.";
+        } else if (score <= 5) {
+            resultDiv.innerHTML += "You show the tendencies characteristic of Type B persons.";
+        } else {
+            resultDiv.innerHTML += "You are somewhere in between Type A and Type B.";
+        }
+    });
+
+    displayQuestions();
+</script>
+
+</body>
+</html>
